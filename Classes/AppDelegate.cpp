@@ -27,6 +27,8 @@
 #include "HelloWorldScene.h"
 #include "LoadingScene.h"
 #include "SimpleAudioEngine.h"
+#include "RealSense\CCCamera.h"
+#include "RealSense\CCCursor.h"
 USING_NS_CC;
 
 AppDelegate::AppDelegate() {
@@ -58,6 +60,25 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     // set FPS. the default value is 1.0/60 if you don't call this
     director->setAnimationInterval(1.0 / 60);
+
+	//add realsense 
+	Camera *camera = Camera::getInstance();
+	camera->enableDepthImage(true, 50);
+	camera->start();
+
+	/*
+	//case 1: depth image will be display fullscreen
+	Cursor *cursor = Cursor::create("cursor/click_up.png", "cursor/click_down.png", "cursor");
+	cursor->setDepthImagePositon(Cursor::DepthImagePosition::Center, 2);
+	director->setNotificationNode(cursor);
+	*/
+	//case 2: depth image will be display at left bottom,with scale factor 0.4
+	Cursor *cursor = Cursor::create("cursor/click_up.png", "cursor/click_down.png", "cursor");
+	cursor->setDepthImagePositon(Cursor::DepthImagePosition::LeftBottom, 0.4);
+	director->setNotificationNode(cursor);	
+
+
+	director->getScheduler()->schedule(schedule_selector(RealSenseEventCenter::tick), RealSenseEventCenter::getInstance(), 0, false);
 
     // create a scene. it's an autorelease object
     //auto scene = LoadingScene::createScene();

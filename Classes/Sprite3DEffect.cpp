@@ -220,7 +220,7 @@ void Effect3DOutline::drawWithSprite(EffectSprite3D* sprite, const Mat4 &transfo
     }
 }
 
-void EffectSprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t flags)
+void EffectSprite3D::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4 &transform, bool transformUpdated)
 {
     for(auto &effect : _effects)
     {
@@ -234,7 +234,7 @@ void EffectSprite3D::draw(Renderer *renderer, const Mat4 &transform, uint32_t fl
     
     if(!_defaultEffect)
     {
-        Sprite3D::draw(renderer, transform, flags);
+        Sprite3D::draw(renderer, transform, transformUpdated);
     }
     else
     {
